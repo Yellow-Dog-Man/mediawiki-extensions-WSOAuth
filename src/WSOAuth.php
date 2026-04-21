@@ -34,6 +34,7 @@ use User;
 use WSOAuth\AuthenticationProvider\AuthProvider;
 use WSOAuth\AuthenticationProvider\FacebookAuth;
 use WSOAuth\AuthenticationProvider\MediaWikiAuth;
+use WSOAuth\AuthenticationProvider\ResoniteAuth;
 use WSOAuth\Exception\ContinuationException;
 use WSOAuth\Exception\FinalisationException;
 use WSOAuth\Exception\InitialisationException;
@@ -55,7 +56,8 @@ class WSOAuth extends PluggableAuth {
 	public const MAPPING_TABLE_NAME = 'wsoauth_multiauth_mappings';
 	public const DEFAULT_AUTH_PROVIDERS = [
 		"mediawiki" => MediaWikiAuth::class,
-		"facebook" => FacebookAuth::class
+		"facebook" => FacebookAuth::class,
+		"resonite" => ResoniteAuth::class
 	];
 
 	/**
