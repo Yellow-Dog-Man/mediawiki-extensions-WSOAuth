@@ -25,8 +25,14 @@ We also made [really small edits](https://github.com/Yellow-Dog-Man/mediawiki-ex
 
 We had really no idea what we were doing, but saw similar logic in other Pluggable Auth Providers. Open an issue if you wish to discuss.
 
+### Resources
+- https://oauth2-client.thephpleague.com/usage/
+- https://github.com/thephpleague/oauth2-client
+- https://github.com/wikimedia/mediawiki-extensions-JWTAuth
+
 
 ## Description
+
 The **WSOAuth** extension enables you to delegate authentication to an OAuth provider. It provides a layer on top of PluggableAuth to allow authentication via a number of OAuth providers.
 
 This extension requires PluggableAuth to be installed first. It also requires some PHP libraries, which may be installed using Composer.

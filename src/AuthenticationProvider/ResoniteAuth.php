@@ -66,6 +66,7 @@ class ResoniteAuth extends AuthProvider {
 	 * @inheritDoc
 	 */
 	public function logout( UserIdentity &$user ): void {
+		// TODO: This should technically do a token revocation 
 	}
 
 	/**
@@ -92,8 +93,8 @@ class ResoniteAuth extends AuthProvider {
 			$tags = $data['tags'] ?? [];
 			
 			if ( !$username ) {
-			    $errorMessage = 'Missing username in Resonite profile response.';
-			    return false;
+				$errorMessage = 'Missing username in Resonite profile response.';
+				return false;
 			}
 
 			return [
@@ -112,5 +113,6 @@ class ResoniteAuth extends AuthProvider {
 	 * @inheritDoc
 	 */
 	public function saveExtraAttributes( int $id ): void {
+		// Ignore this, spent about an hour researching it, it isn't suitable for any of our needs
 	}
 }
