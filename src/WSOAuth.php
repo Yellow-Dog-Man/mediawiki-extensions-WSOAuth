@@ -34,6 +34,7 @@ use User;
 use WSOAuth\AuthenticationProvider\AuthProvider;
 use WSOAuth\AuthenticationProvider\FacebookAuth;
 use WSOAuth\AuthenticationProvider\MediaWikiAuth;
+use WSOAuth\AuthenticationProvider\ResoniteAuth;
 use WSOAuth\Exception\ContinuationException;
 use WSOAuth\Exception\FinalisationException;
 use WSOAuth\Exception\InitialisationException;
@@ -49,12 +50,14 @@ class WSOAuth extends PluggableAuth {
 	public const WSOAUTH_REMOTE_USERNAME_SESSION_KEY = 'WSOAuthRemoteUsername';
 	public const WSOAUTH_OAUTH_REQUEST_KEY_SESSION_KEY = 'WSOAuthOAuthRequestKey';
 	public const WSOAUTH_OAUTH_REQUEST_SECRET_SESSION_KEY = 'WSOAuthOAuthRequestSecret';
+	public const WSOAUTH_ATTRIBUTES_KEY = 'WSOAuthRemoteAttributes';
 
 	public const UNIQUE_NAME_MAX_TRIES = 256;
 	public const MAPPING_TABLE_NAME = 'wsoauth_multiauth_mappings';
 	public const DEFAULT_AUTH_PROVIDERS = [
 		"mediawiki" => MediaWikiAuth::class,
-		"facebook" => FacebookAuth::class
+		"facebook" => FacebookAuth::class,
+		"resonite" => ResoniteAuth::class
 	];
 
 	/**
@@ -239,7 +242,17 @@ class WSOAuth extends PluggableAuth {
 			return [];
 		}
 
-		return $this->autoPopulateGroups;
+		$attributes = $this->autoPopulateGroups ?? [];
+		if ( !is_array( $attributes ) ) {
+			$attributes = [];
+		}
+		
+		$remoteAttributes = $this->session->get( self::WSOAUTH_ATTRIBUTES_KEY, [] );
+		if ( is_array( $remoteAttributes ) ) {
+			$attributes = array_merge( $attributes, $remoteAttributes );
+		}
+
+		return $attributes;
 	}
 
 	/**
@@ -313,6 +326,7 @@ class WSOAuth extends PluggableAuth {
 		$localUserId = $this->getLocalAccountID( $remoteUsername );
 
 		$this->session->set( self::WSOAUTH_REMOTE_USERNAME_SESSION_KEY, $remoteUsername );
+		$this->session->set( self::WSOAUTH_ATTRIBUTES_KEY, $remoteUserInfo );
 		$this->session->save();
 
 		if ( $localUserId !== 0 ) {
